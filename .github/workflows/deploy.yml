@@ -3,10 +3,7 @@ name: Deploy .NET Core Application
 on:
   push:
     branches:
-      - master
-  pull_request:
-    branches:
-      - master
+      - master  # Or any other branch you want to deploy from
 
 jobs:
   build-and-deploy:
@@ -18,14 +15,17 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '8.0'  # Specify your dotnet version
+        dotnet-version: '8.0'  # Specify the .NET version you are using
 
-    - name: Build with dotnet
-      run: dotnet build --configuration Release
+    - name: Restore dependencies
+      run: dotnet restore BunBo_v2/BunBo_v2.csproj
 
-    - name: Publish
-      run: dotnet publish -c Release -o Bunbo --runtime ubuntu.20.04-x64 --self-contained true
-      # Adjust the runtime as necessary
+    - name: Build the project
+      run: dotnet build BunBo_v2/BunBo_v2.csproj --configuration Release --no-restore
+
+    - name: Publish the project
+      run: dotnet publish BunBo_v2/BunBo_v2.csproj -c Release -o published --no-restore
+      # Adjust the -o argument to the desired output directory
 
     - name: Copy files to the server
       uses: appleboy/scp-action@master
@@ -34,5 +34,15 @@ jobs:
         username: ${{ secrets.SERVER_USER }}
         password: ${{ secrets.SERVER_PASSWORD }}
         port: 50
-        source: "./Bunbo/*"
-        target: "/path/on/server"
+        source: "./BunBo_v2/published/*"
+        target: "/var/www/BunBo"
+
+    - name: Execute deployment script
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SERVER_IP }}
+        username: ${{ secrets.SERVER_USER }}
+        password: ${{ secrets.SERVER_PASSWORD }}
+        port: 50
+        script: |
+          cd /var/www/BunBo
