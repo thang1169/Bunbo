@@ -26,8 +26,6 @@ jobs:
     - name: Publish the project
       run: dotnet publish BunBo_v2/BunBo_v2.csproj -c Release -o published --no-restore
       # Adjust the -o argument to the desired output directory
-    - name: List files in published directory
-      run: ls -l BunBo_v2/published
 
     - name: Copy files to the server
       uses: appleboy/scp-action@master
@@ -36,7 +34,7 @@ jobs:
         username: ${{ secrets.SERVER_USER }}
         password: ${{ secrets.SERVER_PASSWORD }}
         port: 50
-        source: "./BunBo_v2/published/*"
+        source: "./published/*"
         target: "/var/www/BunBo"
 
     - name: Execute deployment script
