@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BunBo_v2.Migrations
 {
     [DbContext(typeof(BunBoContext))]
-    [Migration("20240302173017_InitDatabase")]
-    partial class InitDatabase
+    [Migration("20240303180016_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -215,7 +215,7 @@ namespace BunBo_v2.Migrations
                         .HasColumnType("varchar(200)");
 
                     b.Property<byte[]>("Image")
-                        .HasColumnType("image");
+                        .HasColumnType("LONGBLOB");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10, 2)");

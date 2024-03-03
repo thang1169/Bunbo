@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BunBo_v2")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d36acec76fee8c09031d58910a8b3fbc453e91eb")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fa366b4ea429e543a4c60245d6a7ac42e15df275")]
 [assembly: System.Reflection.AssemblyProductAttribute("BunBo_v2")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BunBo_v2")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
