@@ -33,7 +33,7 @@ jobs:
         host: ${{ secrets.SERVER_IP }}
         username: ${{ secrets.SERVER_USER }}
         password: ${{ secrets.SERVER_PASSWORD }}
-        port: 22
+        port: 9092
         source: "./published/*"
         target: "/var/www/BunBo"
 
@@ -43,6 +43,6 @@ jobs:
         host: ${{ secrets.SERVER_IP }}
         username: ${{ secrets.SERVER_USER }}
         password: ${{ secrets.SERVER_PASSWORD }}
-        port: 22
+        port: 9092
         script: |
           cd /var/www/BunBo
