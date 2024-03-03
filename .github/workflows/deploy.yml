@@ -3,10 +3,10 @@ name: Deploy .NET Core Application
 on:
   push:
     branches:
-      - main  # Trigger on push to main branch
+      - master
   pull_request:
     branches:
-      - main
+      - master
 
 jobs:
   build-and-deploy:
