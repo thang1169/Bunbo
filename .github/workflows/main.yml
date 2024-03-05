@@ -35,13 +35,11 @@ jobs:
     - name: Install Firebase CLI
       run: npm install -g firebase-tools
 
-    - name: Firebase CLI login
-      run: firebase login:ci --token 1//0eSNwTZfYMfRmCgYIARAAGA4SNwF-L9IrB5L6EDIivEo0aJiJ0rQeRPU-l8PW9j9aPABBAaBZ4QutDDcOMjQ7voxl1gwlEBidnq8
 
     - name: Deploy to Firebase Storage
-      run: firebase deploy --only storage --project your-project-id
+      run: firebase deploy --only storage --token ${{ secrets.FIREBASE_TOKEN }}
       env:
-        FIREBASE_TOKEN: 1//0eSNwTZfYMfRmCgYIARAAGA4SNwF-L9IrB5L6EDIivEo0aJiJ0rQeRPU-l8PW9j9aPABBAaBZ4QutDDcOMjQ7voxl1gwlEBidnq8
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
 
     # - name: Copy files to the server
     #   uses: appleboy/scp-action@master
