@@ -26,23 +26,39 @@ jobs:
     - name: Publish the project
       run: dotnet publish BunBo_v2/BunBo_v2.csproj -c Release -o published --no-restore
       # Adjust the -o argument to the desired output directory
-
-    - name: Copy files to the server
-      uses: appleboy/scp-action@master
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
       with:
-        host: ${{ secrets.SERVER_IP }}
-        username: ${{ secrets.SERVER_USER }}
-        password: ${{ secrets.SERVER_PASSWORD }}
-        port: 9092
-        source: "./published/*"
-        target: "/var/www/BunBo"
+        node-version: '20.11.1' # Specify the Node.js version
 
-    - name: Execute deployment script
-      uses: appleboy/scp-action@v0.1.3
-      with:
-        host: ${{ secrets.SERVER_IP }}
-        username: ${{ secrets.SERVER_USER }}
-        password: ${{ secrets.SERVER_PASSWORD }}
-        port: 9092
-        script: |
-          cd /var/www/BunBo
+    - name: Install Firebase CLI
+      run: npm install -g firebase-tools
+
+    - name: Firebase CLI login
+      run: firebase login:ci --token ${{ secrets.FIREBASE_TOKEN }}
+
+    - name: Deploy to Firebase Storage
+      run: firebase deploy --only storage --project your-project-id
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
+    # - name: Copy files to the server
+    #   uses: appleboy/scp-action@master
+    #   with:
+    #     host: ${{ secrets.SERVER_IP }}
+    #     username: ${{ secrets.SERVER_USER }}
+    #     password: ${{ secrets.SERVER_PASSWORD }}
+    #     port: 9092
+    #     source: "./published/*"
+    #     target: "/var/www/BunBo"
+
+    # - name: Execute deployment script
+    #   uses: appleboy/scp-action@v0.1.3
+    #   with:
+    #     host: ${{ secrets.SERVER_IP }}
+    #     username: ${{ secrets.SERVER_USER }}
+    #     password: ${{ secrets.SERVER_PASSWORD }}
+    #     port: 9092
+    #     script: |
+    #       cd /var/www/BunBo
