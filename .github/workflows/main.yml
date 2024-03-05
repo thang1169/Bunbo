@@ -1,1 +1,48 @@
+name: Deploy .NET Core Application
 
+on:
+  push:
+    branches:
+      - master  # Or any other branch you want to deploy from
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '8.0'  # Specify the .NET version you are using
+
+    - name: Restore dependencies
+      run: dotnet restore BunBo_v2/BunBo_v2.csproj
+
+    - name: Build the project
+      run: dotnet build BunBo_v2/BunBo_v2.csproj --configuration Release --no-restore
+
+    - name: Publish the project
+      run: dotnet publish BunBo_v2/BunBo_v2.csproj -c Release -o published --no-restore
+      # Adjust the -o argument to the desired output directory
+
+    - name: Copy files to the server
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.SERVER_IP }}
+        username: ${{ secrets.SERVER_USER }}
+        password: ${{ secrets.SERVER_PASSWORD }}
+        port: 9092
+        source: "./published/*"
+        target: "/var/www/BunBo"
+
+    - name: Execute deployment script
+      uses: appleboy/scp-action@v0.1.3
+      with:
+        host: ${{ secrets.SERVER_IP }}
+        username: ${{ secrets.SERVER_USER }}
+        password: ${{ secrets.SERVER_PASSWORD }}
+        port: 9092
+        script: |
+          cd /var/www/BunBo
