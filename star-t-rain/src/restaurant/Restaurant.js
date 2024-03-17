@@ -1,66 +1,53 @@
-import React from 'react'
-import ProductList from '../product/ProductList'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { axiosAuth } from '../lib/axios';
 
 export default function Restaurant() {
+    const [restaurantList, setRestaurantList] = useState([]);
+
+    // const baseURL = 'https://localhost:7096/api/Restaurants';
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axiosAuth.get('/Restaurants');
+                if (!response.data) {
+                    throw new Error('No data available');
+                }
+                setRestaurantList(response.data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
     return (
         <div>
-            <div class="flex flex-col text-center w-full mb-5">
-                <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">Our Team</h1>
+            <div className="flex flex-col text-center w-full mb-5">
+                <h1 className="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">Thương Hiệu</h1>
             </div>
-            <section class="text-gray-600 body-font">
-                <div class="container px-5 py-10 mx-auto">
-                    <div class="flex flex-wrap -m-4">
-                        <div class="p-4 md:w-1/3">
-                            <Link to='/restaurantdetail'>
-                                <div class="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
-                                    <img class=" h-1/2 w-full object-cover object-center" src="https://furnibuy.com/wp-content/uploads/2021/04/furnibuy-tu-van-chon-ban-an-4-ghe-dep-cho-quan-bun-bo-hue.jpg" alt="blog" />
-                                    <div class="p-6">
-                                        <h1 class="title-font text-lg font-medium text-gray-900 mb-3">Bún Bò Sinh Viên</h1>
-                                        <p class="leading-relaxed mb-3">Ký túc xá khu B, Làng Đại Học</p>
+            <section className="text-gray-600 body-font">
+                <div className="container px-5 py-10 mx-auto">
+                    <div className="flex flex-wrap -m-4">
+                        {restaurantList.map((data) => (
+                            <div className="p-4 md:w-1/3" key={data.restaurantId}>
+                                <Link to={`/restaurantdetail/${data.restaurantId}`}>
+                                    <div className="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
+                                        <img className="h-1/2 w-full object-cover object-center" src="https://furnibuy.com/wp-content/uploads/2021/04/furnibuy-tu-van-chon-ban-an-4-ghe-dep-cho-quan-bun-bo-hue.jpg" alt="blog" />
+                                        <div className="p-6">
+                                            <h1 className="title-font text-lg font-medium text-gray-900 mb-3">{data.restaurantName}</h1>
+                                            <p className="leading-relaxed mb-3">{data.description}</p>
+                                        </div>
                                     </div>
-                                </div>
-                            </Link>
-                        </div>
-                        <div class="p-4 md:w-1/3">
-                            <div class="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
-                                <img class=" h-1/2 w-full object-cover object-center" src="https://dummyimage.com/720x400" alt="blog" />
-                                <div class="p-6">
-                                    <h1 class="title-font text-lg font-medium text-gray-900 mb-3">The Catalyzer</h1>
-                                    <p class="leading-relaxed mb-3">Photo booth fam kinfolk cold-pressed sriracha leggings jianbing microdosing tousled waistcoat.</p>
-                                    <div class="flex items-center flex-wrap ">
-                                        <a class="text-indigo-500 inline-flex items-center md:mb-2 lg:mb-0">Learn More
-                                            <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                <path d="M5 12h14"></path>
-                                                <path d="M12 5l7 7-7 7"></path>
-                                            </svg>
-                                        </a>
-
-                                    </div>
-                                </div>
+                                </Link>
                             </div>
-                        </div>
-                        <div class="p-4 md:w-1/3">
-                            <div class="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
-                                <img class=" h-1/2 w-full object-cover object-center" src="https://dummyimage.com/720x400" alt="blog" />
-                                <div class="p-6">
-                                    <h1 class="title-font text-lg font-medium text-gray-900 mb-3">The Catalyzer</h1>
-                                    <p class="leading-relaxed mb-3">Photo booth fam kinfolk cold-pressed sriracha leggings jianbing microdosing tousled waistcoat.</p>
-                                    <div class="flex items-center flex-wrap ">
-                                        <a class="text-indigo-500 inline-flex items-center md:mb-2 lg:mb-0">Learn More
-                                            <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                <path d="M5 12h14"></path>
-                                                <path d="M12 5l7 7-7 7"></path>
-                                            </svg>
-                                        </a>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </section>
         </div>
-    )
+    );
 }

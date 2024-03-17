@@ -1,13 +1,67 @@
-import { Container, Row, Col, Button } from 'reactstrap'
-import React from 'react'
-import { Box, TextField } from '@mui/material'
-import { Link, useNavigate } from 'react-router-dom'
+import { Container, Row, Col, Button } from 'reactstrap';
+import React, { useState } from 'react';
+import { TextField } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
+import UseToken from '../../handleToken/UseToken';
+import axios from 'axios';
+import { axiosAuth } from '../../lib/axios';
+
 
 export default function LoginPage() {
-    const navigate = useNavigate()
-    const handleLogin = () => {
-        navigate("/")
-    }
+    const [userName, setUseName] = useState("");
+    const [password, setPassWord] = useState("");
+    const [message, setMessage] = useState("");
+    const { setToken } = UseToken();
+    const [isLoading, setLoading] = useState(false);
+    const navigate = useNavigate();
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+
+        if (!userName || !password) {
+            setMessage("We need your email and password");
+            return;
+        }
+
+        const data = {
+            nameOrEmail: userName,
+            password: password,
+        };
+
+        setLoading(true);
+
+        try {
+            const response = await axiosAuth.post(
+                "/Auth/signin",
+                {
+                    nameOrEmail: userName,
+                    password: password,
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            console.log(data)
+
+            const result = response.data;
+
+            if (response.status === 200) {
+                console.log(result);
+                setToken(result.accessToken); // Assuming your API returns an access token
+                navigate("/");
+            } else {
+                setMessage(result.message);
+            }
+        } catch (error) {
+            console.error("Login failed:", error);
+            setMessage("An unexpected error occurred");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <Row className='flex mt-10'>
             <Col className='w-[50%]'
@@ -21,6 +75,8 @@ export default function LoginPage() {
                 <div className=' w-[65%] mx-auto'>
                     <div className='flex flex-col'>
                         <TextField
+                            value={userName}
+                            onChange={(e) => setUseName(e.target.value)}
                             id="standard-search"
                             label="Email Address"
                             type="search"
@@ -28,6 +84,8 @@ export default function LoginPage() {
                             style={{ marginBottom: '70px', width: '80%', marginLeft: 'auto', marginRight: 'auto' }}
                         />
                         <TextField
+                            value={password}
+                            onChange={(e) => setPassWord(e.target.value)}
                             id="standard-password-input"
                             label="Password"
                             type="password"
@@ -47,16 +105,18 @@ export default function LoginPage() {
                                 color: 'white',
                             }}
                             onClick={handleLogin}
+                            disabled={isLoading}
                         >
-                            Login
+                            {isLoading ? "Logging in..." : "Login"}
                         </Button>
                         <div className='mt-7'>
                             <span>Bạn chưa có tài khoản?</span>
                             <Link to={"/register"} className='text-blue-400'> Tạo tài khoản</Link>
                         </div>
+                        {message && <div className="mt-2 text-red-500">{message}</div>}
                     </div>
                 </div>
             </Col>
         </Row>
-    )
+    );
 }

@@ -1,9 +1,34 @@
 import { Container, Row, Col, Button } from 'reactstrap'
-import React from 'react'
+import React, { useState } from 'react'
 import { Box, TextField } from '@mui/material'
 import { Link } from 'react-router-dom'
+import AuthApi from '../../utils/AuthApi'
 
 export default function Register() {
+    const [useName, setUseName] = useState();
+    const [passWord, setPassWord] = useState();
+    const [useEmail, setUseEmail] = useState();
+    const [usePhoneNumber, setUsePhoneNumber] = useState();
+    const [useAddress, setUseAddress] = useState();
+
+    const handleRegister = async () => {
+        try {
+            const UrlData = await AuthApi.register({
+                customerName: useName, // du lieu tk khi ngdung nhap
+                email: useEmail,
+                password: passWord, // du lieu mk khi ngdung nhap
+                phoneNumber: usePhoneNumber,
+                address: useAddress,
+
+            })
+            console.log('checkdata', UrlData) // check token
+            localStorage.setItem("access_token", UrlData.data.token);// luu lai trinh duyet cua ng dung
+
+            // navigate('/')
+        } catch (error) {
+            console.log('error')
+        }
+    }
     return (
         <Row className='flex'>
             <Col className='w-[50%]'
@@ -17,6 +42,8 @@ export default function Register() {
                 <div className=' w-[65%] mx-auto'>
                     <div className='flex flex-col'>
                         <TextField
+                            value={useEmail}
+                            onChange={(e) => { setUseEmail(e.target.value) }}
                             id="standard-search"
                             label="Email Address"
                             type="search"
@@ -24,6 +51,8 @@ export default function Register() {
                             style={{ marginBottom: '70px', width: '80%', marginLeft: 'auto', marginRight: 'auto' }}
                         />
                         <TextField
+                            value={useName}
+                            onChange={(e) => { setUseName(e.target.value) }}
                             id="standard-search"
                             label="Full Name"
                             type="search"
@@ -31,6 +60,8 @@ export default function Register() {
                             style={{ marginBottom: '70px', width: '80%', marginLeft: 'auto', marginRight: 'auto' }}
                         />
                         <TextField
+                            value={passWord}
+                            onChange={(e) => { setPassWord(e.target.value) }}
                             id="standard-password-input"
                             label="Password"
                             type="password"
@@ -39,6 +70,8 @@ export default function Register() {
                             style={{ width: '80%', marginLeft: 'auto', marginRight: 'auto', marginBottom: '70px' }}
                         />
                         <TextField
+                            //    value={useEmail}
+                            //    onChange={(e) => { setUseEmail(e.target.value) }}
                             id="standard-password-input"
                             label="Confirm Password"
                             type="password"
@@ -47,6 +80,8 @@ export default function Register() {
                             style={{ width: '80%', marginLeft: 'auto', marginRight: 'auto', marginBottom: '70px' }}
                         />
                         <TextField
+                            value={usePhoneNumber}
+                            onChange={(e) => { setUsePhoneNumber(e.target.value) }}
                             id="standard-search"
                             label="Phone Number"
                             type="number"
@@ -54,9 +89,11 @@ export default function Register() {
                             style={{ marginBottom: '70px', width: '80%', marginLeft: 'auto', marginRight: 'auto' }}
                         />
                         <TextField
+                            value={useAddress}
+                            onChange={(e) => { setUseAddress(e.target.value) }}
                             id="standard-password-input"
                             label="Address"
-                            type="password"
+                            type="Address"
                             autoComplete="current-password"
                             variant="standard"
                             style={{ width: '80%', marginLeft: 'auto', marginRight: 'auto', marginBottom: '70px' }}
@@ -72,6 +109,7 @@ export default function Register() {
                                 fontSize: '20px',
                                 color: 'white',
                             }}
+                            onClick={handleRegister}
                         >
                             Tạo tài khoản
                         </Button>

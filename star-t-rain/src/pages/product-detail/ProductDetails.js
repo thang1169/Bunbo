@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PlaceIcon from "@mui/icons-material/Place";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -17,6 +17,7 @@ import SingleProduct from "../../components/SingleCard";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useLocation } from "react-router-dom";
+import ProductListApi from "../../utils/ProductListApi";
 const dataProduct = [
   {
     id: 1,
@@ -51,11 +52,31 @@ const dataProduct = [
   },
 ];
 
+
 export default function ProductDetails() {
   const [quantity, setQuantity] = useState(1);
   const [errorMsg, setErrorMsg] = useState("");
+  const [productDetail, setProductDetail] = useState({});
   const location = useLocation();
   console.log("data chi tiết món ăn: ", location.state);
+
+  useEffect(() => {
+    const handleFetchProductDetail = async (id) => {
+      try {
+        const UrlData = await ProductListApi.getProductDetail(id)
+        console.log('checkdata', UrlData) // check token
+        setProductDetail(UrlData);
+
+      } catch (error) {
+        console.log('error')
+      }
+    }
+    if (location.state.id) {
+      handleFetchProductDetail(location.state.id);
+    }
+  }, [location])
+
+
   const handleChange = (event) => {
     if (event.target.value <= 0) {
       setErrorMsg("Số lượng phải lớn hơn 0!");
