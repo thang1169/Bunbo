@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { axiosAuth } from '../lib/axios';
 
@@ -11,7 +11,7 @@ export default function Restaurant() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axiosAuth.get('/Restaurants');
+                const response = await axiosAuth.get(`/Restaurants`);
                 if (!response.data) {
                     throw new Error('No data available');
                 }

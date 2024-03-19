@@ -2,7 +2,7 @@ import { Container, Row, Col, Button } from 'reactstrap';
 import React, { useState } from 'react';
 import { TextField } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-import UseToken from '../../handleToken/UseToken';
+// import UseToken from '../../handleToken/UseToken';
 import axios from 'axios';
 import { axiosAuth } from '../../lib/axios';
 
@@ -11,7 +11,7 @@ export default function LoginPage() {
     const [userName, setUseName] = useState("");
     const [password, setPassWord] = useState("");
     const [message, setMessage] = useState("");
-    const { setToken } = UseToken();
+    // const { setToken } = UseToken();
     const [isLoading, setLoading] = useState(false);
     const navigate = useNavigate();
 
@@ -49,7 +49,7 @@ export default function LoginPage() {
 
             if (response.status === 200) {
                 console.log(result);
-                setToken(result.accessToken); // Assuming your API returns an access token
+                // setToken(result.accessToken); // Assuming your API returns an access token
                 navigate("/");
             } else {
                 setMessage(result.message);
