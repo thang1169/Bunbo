@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios'; // Import Axios
+// import axios from 'axios'; // Import Axios
 import { axiosAuth } from '../lib/axios';
 
 export default function ProductList() {
@@ -18,8 +18,9 @@ export default function ProductList() {
                 }
                 setProductList(productResponse.data);
 
+
                 const uniqueRestaurantIds = [...new Set(productResponse.data.map(product => product.restaurantId))];
-                const restaurantDataPromises = uniqueRestaurantIds.map(restaurantId => axiosAuth.get(`Restaurants/${restaurantId}`));
+                const restaurantDataPromises = uniqueRestaurantIds.map(restaurantId => axiosAuth.get(`/Restaurants/${restaurantId}`));
 
                 const restaurantDataResponses = await Promise.all(restaurantDataPromises);
                 const restaurantData = restaurantDataResponses.map(response => response.data);
@@ -30,6 +31,7 @@ export default function ProductList() {
                 }, {});
 
                 setRestaurantDetails(restaurantMap);
+
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
