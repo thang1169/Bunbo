@@ -1,8 +1,32 @@
-import React from 'react'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 export default function UserManagement() {
+    const [userList, setUserList] = useState([]);
+
+    const baseURL = `http://fptcloud28.fptu2024.meu-solutions.com/api/Customers`;
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(baseURL);
+                if (!response.data) {
+                    throw new Error('No data available');
+                }
+                console.log(response);
+                setUserList(response.data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                // Handle the error gracefully, you can set userList to an empty array or show a message to the user.
+            }
+        };
+
+        fetchData();
+    }, []);
+
     return (
+
         <div>
 
 
@@ -28,57 +52,25 @@ export default function UserManagement() {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Apple MacBook Pro 17"
-                            </th>
-                            <td class="px-6 py-4">
-                                Ký túc xá khu B, Làng Đại Học
-                            </td>
-                            <td class="px-6 py-4">
-                                nnhi
-                            </td>
-                            <td class="px-6 py-4">
-                                xxxxxxxx09
-                            </td>
-                            <td class="px-6 py-4">
-                                <a href="#" class="font-medium text-4C8787 dark:text-blue-500 hover:underline">Ẩn</a>
-                            </td>
-                        </tr>
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Apple MacBook Pro 17"
-                            </th>
-                            <td class="px-6 py-4">
-                                Ký túc xá khu B, Làng Đại Học
-                            </td>
-                            <td class="px-6 py-4">
-                                nnhi
-                            </td>
-                            <td class="px-6 py-4">
-                                xxxxxxxx09
-                            </td>
-                            <td class="px-6 py-4">
-                                <a href="#" class="font-medium text-4C8787 dark:text-blue-500 hover:underline">Ẩn</a>
-                            </td>
-                        </tr>
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Apple MacBook Pro 17"
-                            </th>
-                            <td class="px-6 py-4">
-                                Ký túc xá khu B, Làng Đại Học
-                            </td>
-                            <td class="px-6 py-4">
-                                nnhi
-                            </td>
-                            <td class="px-6 py-4">
-                                xxxxxxxx09
-                            </td>
-                            <td class="px-6 py-4">
-                                <a href="#" class="font-medium text-4C8787 dark:text-blue-500 hover:underline">Ẩn</a>
-                            </td>
-                        </tr>
+                        {userList.map((data) => (
+                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    {data.customerId}
+                                </th>
+                                <td class="px-6 py-4">
+                                    {data.address}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {data.customerName}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {data.phoneNumber}
+                                </td>
+                                <td class="px-6 py-4">
+                                    <a href="#" class="font-medium text-4C8787 dark:text-blue-500 hover:underline">Ẩn</a>
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
 

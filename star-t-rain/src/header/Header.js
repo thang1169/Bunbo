@@ -1,8 +1,28 @@
-import React from 'react'
+import React, { useState } from 'react';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 export default function Header() {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    const handleLogout = () => {
+        // Perform logout operation here
+        // Clear session storage or perform any necessary tasks
+        setIsLoggedIn(false);
+    };
+
+    const userIcon = isLoggedIn ? (
+        <button onClick={handleLogout} class="mr-5 hover:text-gray-900">
+            <i class="fa-regular fa-sign-out-alt"></i>
+        </button>
+    ) : (
+        <Link to='/login' class="mr-5 hover:text-gray-900">
+            <i class="fa-regular fa-user"></i>
+        </Link>
+    );
+
+
     return (
         <header class="text-black-600 body-font mb-10">
             <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
@@ -14,8 +34,10 @@ export default function Header() {
                 </a>
 
                 <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
-                    <Link to='/login' class="mr-5 hover:text-gray-900"><i class="fa-regular fa-user"></i></Link>
-                    <Link to='/cart' class="mr-5 hover:text-gray-900"><i class="fa-solid fa-cart-shopping"></i></Link>
+                    {userIcon}
+                    <Link to='/cart' class="mr-5 hover:text-gray-900">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                    </Link>
                 </nav>
                 <Link to="/dashboard">
                     <button class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">
@@ -27,15 +49,10 @@ export default function Header() {
             <nav class="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center border-t border-b border-black border-solid border border-2-0 border-r-0 border-l-0 px-4">
                 <Link to="/" class="mr-16 font-normal active:text-4C8787 active:border-4C8787 active:border-solid active:border-1px">TRANG CHỦ</Link>
                 <Link to="/bun-bo-tho-da" class="mr-16 font-normal active:text-4C8787 active:border-4C8787 active:border-solid active:border-1px">THỰC ĐƠN</Link>
-
                 <Link to="/restaurant" class="mr-16 font-normal active:text-4C8787 active:border-4C8787 active:border-solid active:border-1px">THƯƠNG HIỆU</Link>
                 <Link to="/contact" class="mr-16 font-normal active:text-4C8787 active:border-4C8787 active:border-solid active:border-1px">LIÊN HỆ</Link>
-                <Link to="/order" class="mr-16 font-normal active:text-4C8787 active:border-4C8787 active:border-solid active:border-1px">ĐƠN HÀNG</Link>
                 <Link to="/userpofile" class="mr-16 font-normal active:text-4C8787 active:border-4C8787 active:border-solid active:border-1px">THÔNG TIN</Link>
             </nav>
-
-
         </header>
-
-    )
+    );
 }

@@ -1,17 +1,17 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-// import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { axiosAuth } from '../lib/axios';
+// import { axiosAuth } from '../lib/axios';
 
 export default function Restaurant() {
     const [restaurantList, setRestaurantList] = useState([]);
 
-    // const baseURL = 'https://localhost:7096/api/Restaurants';
+    const baseURL = 'http://fptcloud28.fptu2024.meu-solutions.com/api/Restaurants';
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axiosAuth.get(`/Restaurants`);
+                const response = await axios.get(baseURL);
                 if (!response.data) {
                     throw new Error('No data available');
                 }

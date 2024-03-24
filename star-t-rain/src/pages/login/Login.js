@@ -2,54 +2,43 @@ import { Container, Row, Col, Button } from 'reactstrap';
 import React, { useState } from 'react';
 import { TextField } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-// import UseToken from '../../handleToken/UseToken';
-// import axios from 'axios';
-import { axiosAuth } from '../../lib/axios';
-
+import axios from 'axios';
 
 export default function LoginPage() {
-    const [userName, setUseName] = useState("");
-    const [password, setPassWord] = useState("");
+    const [userName, setUserName] = useState("");
+    const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
-    // const { setToken } = UseToken();
     const [isLoading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
-
+    const handleLogin = async () => {
         if (!userName || !password) {
-            setMessage("We need your email and password");
+            setMessage("Please provide both email and password.");
             return;
         }
-
-        const data = {
-            nameOrEmail: userName,
-            password: password,
-        };
 
         setLoading(true);
 
         try {
-            const response = await axiosAuth.post(
-                "/Auth/signin",
+            const response = await axios.post(
+                `http://fptcloud28.fptu2024.meu-solutions.com/api/Auth/signin?nameOrEmail=${encodeURIComponent(userName)}&password=${encodeURIComponent(password)}`,
                 {
                     nameOrEmail: userName,
-                    password: password,
-                },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
+                    password: password
                 }
             );
-            console.log(data)
 
             const result = response.data;
 
             if (response.status === 200) {
-                console.log(result);
-                // setToken(result.accessToken); // Assuming your API returns an access token
+                // Store token in sessionStorage upon successful login
+                sessionStorage.setItem('token', result.accessToken);
+
+                // Store user information in sessionStorage
+                sessionStorage.setItem('userName', result.customerName);
+                sessionStorage.setItem('phoneNumber', result.phoneNumber);
+                sessionStorage.setItem('address', result.address);
+
                 navigate("/");
             } else {
                 setMessage(result.message);
@@ -64,35 +53,34 @@ export default function LoginPage() {
 
     return (
         <Row className='flex mt-10'>
-            <Col className='w-[50%]'
-            >
-                <img src='https://www.foodandwine.com/thmb/oQxMr-wP2YjxLZ63kRmGnlDy4ZI=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Bun-bo-Hue-Vietnamese-Vermicelli-Noodle-Soup-with-Sliced-Beef-XL-RECIPE0423-47194f9a6efb4695ac72c76798f6aa64.jpg'
-                    alt=''
-                    style={{ borderRadius: '0px 20px 30px 0px' }} />
+            <Col className='w-[50%]'>
+                {/* Image */}
             </Col>
 
             <Col className='w-[50%] d-flex align-items-center justify-content-center mx-auto my-auto'>
                 <div className=' w-[65%] mx-auto'>
                     <div className='flex flex-col'>
+                        {/* Input fields */}
                         <TextField
                             value={userName}
-                            onChange={(e) => setUseName(e.target.value)}
+                            onChange={(e) => setUserName(e.target.value)}
                             id="standard-search"
                             label="Email Address"
-                            type="search"
+                            type="text"
                             variant="standard"
-                            style={{ marginBottom: '70px', width: '80%', marginLeft: 'auto', marginRight: 'auto' }}
+                            required
                         />
                         <TextField
                             value={password}
-                            onChange={(e) => setPassWord(e.target.value)}
+                            onChange={(e) => setPassword(e.target.value)}
                             id="standard-password-input"
                             label="Password"
                             type="password"
                             autoComplete="current-password"
                             variant="standard"
-                            style={{ width: '80%', marginLeft: 'auto', marginRight: 'auto', marginBottom: '70px' }}
+                            required
                         />
+                        {/* Login button */}
                         <Button
                             style={{
                                 width: "80%",
@@ -109,10 +97,12 @@ export default function LoginPage() {
                         >
                             {isLoading ? "Logging in..." : "Login"}
                         </Button>
+                        {/* Register link */}
                         <div className='mt-7'>
                             <span>Bạn chưa có tài khoản?</span>
                             <Link to={"/register"} className='text-blue-400'> Tạo tài khoản</Link>
                         </div>
+                        {/* Error message */}
                         {message && <div className="mt-2 text-red-500">{message}</div>}
                     </div>
                 </div>

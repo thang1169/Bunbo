@@ -1,26 +1,25 @@
 import React, { useEffect, useState } from 'react';
-// import axios from 'axios'; // Import Axios
-import { axiosAuth } from '../lib/axios';
+import axios from 'axios';
+// import { axiosAuth } from '../lib/axios';
 
 export default function ProductList() {
     const [productList, setProductList] = useState([]);
     const [restaurantDetails, setRestaurantDetails] = useState({});
 
-    // const baseURL = 'https://localhost:7096/api/Products';
+    const baseURL = 'http://fptcloud28.fptu2024.meu-solutions.com/api//Products';
     // const restaurantAPI = 'https://localhost:7096/api/Restaurants';
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const productResponse = await axiosAuth.get('/Products');
+                const productResponse = await axios.get(baseURL);
                 if (!productResponse.data) {
                     throw new Error('No data available');
                 }
                 setProductList(productResponse.data);
 
-
                 const uniqueRestaurantIds = [...new Set(productResponse.data.map(product => product.restaurantId))];
-                const restaurantDataPromises = uniqueRestaurantIds.map(restaurantId => axiosAuth.get(`/Restaurants/${restaurantId}`));
+                const restaurantDataPromises = uniqueRestaurantIds.map(restaurantId => axios.get(`http://fptcloud28.fptu2024.meu-solutions.com/api/Restaurants/${restaurantId}`));
 
                 const restaurantDataResponses = await Promise.all(restaurantDataPromises);
                 const restaurantData = restaurantDataResponses.map(response => response.data);
@@ -31,7 +30,6 @@ export default function ProductList() {
                 }, {});
 
                 setRestaurantDetails(restaurantMap);
-
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
