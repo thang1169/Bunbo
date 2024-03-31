@@ -1,8 +1,9 @@
 import { Container, Row, Col, Button } from 'reactstrap'
 import React, { useState } from 'react'
 import { Box, TextField } from '@mui/material'
-import { Link } from 'react-router-dom'
-import AuthApi from '../../utils/AuthApi'
+import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios';
+
 
 export default function Register() {
     const [useName, setUseName] = useState();
@@ -10,25 +11,31 @@ export default function Register() {
     const [useEmail, setUseEmail] = useState();
     const [usePhoneNumber, setUsePhoneNumber] = useState();
     const [useAddress, setUseAddress] = useState();
-
+    const [message, setMessage] = useState("");
+    const [isLoading, setLoading] = useState(false);
+    const navigate = useNavigate();
     const handleRegister = async () => {
+        setLoading(true);
         try {
-            const UrlData = await AuthApi.register({
-                customerName: useName, // du lieu tk khi ngdung nhap
-                email: useEmail,
-                password: passWord, // du lieu mk khi ngdung nhap
-                phoneNumber: usePhoneNumber,
-                address: useAddress,
+            const response = await axios.post(
+                `http://fptcloud28.fptu2024.meu-solutions.com/api/Auth/signup`,
+                {
+                    customerName: useName,
+                    email: useEmail,
+                    password: passWord,
+                    phoneNumber: usePhoneNumber,
+                    address: useAddress,
 
-            })
-            console.log('checkdata', UrlData) // check token
-            localStorage.setItem("access_token", UrlData.data.token);// luu lai trinh duyet cua ng dung
+                }
 
-            // navigate('/')
+            );
+
+            navigate('/login')
         } catch (error) {
-            console.log('error')
+            console.error("Login failed:", error);
+            setMessage("An unexpected error occurred");
         }
-    }
+    };
     return (
         <Row className='flex'>
             <Col className='w-[50%]'

@@ -12,7 +12,7 @@ export default function (detailRestaurant) {
     const [products, setProducts] = useState([]); // State to store products
     useEffect(() => {
         // Fetch restaurant details
-        axios.get(`https://localhost:7096/api/Restaurants/${id}`)
+        axios.get(`http://fptcloud28.fptu2024.meu-solutions.com/api/Restaurants/${id}`)
             .then((response) => {
                 const data = response.data;
                 setRestaurantName(data.restaurantName);
@@ -21,17 +21,6 @@ export default function (detailRestaurant) {
             .catch((error) => {
                 console.log(error);
                 setError('Unable to fetch restaurant details.');
-            });
-
-        // Fetch products associated with the restaurant
-        axios.get(`http://fptcloud28.fptu2024.meu-solutions.com/api/Restaurants/${id}`)
-            .then((response) => {
-                const data = response.data;
-                setProducts(data); // Set products state with fetched data
-            })
-            .catch((error) => {
-                console.log(error);
-                setError('Unable to fetch products.');
             });
     }, [id]);
     return (

@@ -1,7 +1,44 @@
-import React from 'react'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 export default function ProductManagement() {
+    const [productList, setProductList] = useState([]);
+    const [restaurantMap, setRestaurantMap] = useState({});
+    const baseURL = `http://fptcloud28.fptu2024.meu-solutions.com/api/Products`;
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(baseURL);
+                if (!response.data) {
+                    throw new Error('No data available');
+                }
+                console.log(response);
+                // Cập nhật orderList với dữ liệu được định dạng lại ngày tháng
+
+                setProductList(response.data);
+                const uniqueRestaurantIds = [...new Set(response.data.map(product => product.restaurantId))];
+                const restaurantDataPromises = uniqueRestaurantIds.map(restaurantId => axios.get(`https://localhost:7096/api/Restaurants/${restaurantId}`));
+
+                const restaurantDataResponses = await Promise.all(restaurantDataPromises);
+                const restaurantData = restaurantDataResponses.map(response => response.data);
+
+                const map = restaurantData.reduce((acc, restaurant) => {
+                    acc[restaurant.restaurantId] = restaurant.restaurantName;
+                    return acc;
+                }, {});
+
+                setRestaurantMap(map);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                // Xử lý lỗi nếu có
+            }
+        };
+
+        fetchData();
+    }, []);
+
     return (
         <div>
 
@@ -20,66 +57,30 @@ export default function ProductManagement() {
                                 Giá
                             </th>
                             <th scope="col" class="px-6 py-3">
-                                Đánh giá
-                            </th>
-                            <th scope="col" class="px-6 py-3">
 
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Apple MacBook Pro 17"
-                            </th>
-                            <td class="px-6 py-4">
-                                Silver
-                            </td>
-                            <td class="px-6 py-4">
-                                $2999
-                            </td>
-                            <td class="px-6 py-4">
-                                4.5
-                            </td>
-                            <td class="px-6 py-4">
-                                <a href="#" class="font-medium text-4C8787 dark:text-blue-500 hover:underline">Chỉnh sửa</a> | <a href="#" class="font-medium text-4C8787 dark:text-blue-500 hover:underline">Ẩn</a>
-                            </td>
-                        </tr>
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Apple MacBook Pro 17"
-                            </th>
-                            <td class="px-6 py-4">
-                                Silver
-                            </td>
-                            <td class="px-6 py-4">
-                                $2999
-                            </td>
-                            <td class="px-6 py-4">
-                                4.5
-                            </td>
-                            <td class="px-6 py-4">
-                                <a href="/editproduct" class="font-medium text-4C8787 dark:text-blue-500 hover:underline">Chỉnh sửa</a> | <a href="#" class="font-medium text-4C8787 dark:text-blue-500 hover:underline">Ẩn</a>
-                            </td>
-                        </tr>
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Apple MacBook Pro 17"
-                            </th>
-                            <td class="px-6 py-4">
-                                Silver
-                            </td>
-                            <td class="px-6 py-4">
-                                $2999
-                            </td>
-                            <td class="px-6 py-4">
-                                4.5
-                            </td>
-                            <td class="px-6 py-4">
-                                <a href="/editproduct" class="font-medium text-4C8787 dark:text-blue-500 hover:underline">Chỉnh sửa</a> | <a href="#" class="font-medium text-4C8787 dark:text-blue-500 hover:underline">Ẩn</a>
-                            </td>
-                        </tr>
+                        {productList.map((data) => (
+                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    {data.productName}
+                                </th>
+                                <td class="px-6 py-4">
+                                    {restaurantMap[data.restaurantId]}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {data.price}
+                                </td>
+
+                                <td class="px-6 py-4">
+                                    <a href="#" class="font-medium text-4C8787 dark:text-blue-500 hover:underline">Chỉnh sửa</a> | <a href="#" class="font-medium text-4C8787 dark:text-blue-500 hover:underline">Ẩn</a>
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
+
                 </table>
 
             </div>

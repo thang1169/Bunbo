@@ -1,27 +1,32 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Personal\\C-sharp\\EXE201_FE\\BunBo_v2\\BunBo_v2.csproj": {}
+    "D:\\Chuyên ngành\\chuyên ngành 8\\EXE201\\deploy\\Bunbo\\BunBo_v2\\BunBo_v2.csproj": {}
   },
   "projects": {
-    "C:\\Personal\\C-sharp\\EXE201_FE\\BunBo_v2\\BunBo_v2.csproj": {
+    "D:\\Chuyên ngành\\chuyên ngành 8\\EXE201\\deploy\\Bunbo\\BunBo_v2\\BunBo_v2.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Personal\\C-sharp\\EXE201_FE\\BunBo_v2\\BunBo_v2.csproj",
+        "projectUniqueName": "D:\\Chuyên ngành\\chuyên ngành 8\\EXE201\\deploy\\Bunbo\\BunBo_v2\\BunBo_v2.csproj",
         "projectName": "BunBo_v2",
-        "projectPath": "C:\\Personal\\C-sharp\\EXE201_FE\\BunBo_v2\\BunBo_v2.csproj",
-        "packagesPath": "C:\\Users\\ptd\\.nuget\\packages\\",
-        "outputPath": "C:\\Personal\\C-sharp\\EXE201_FE\\BunBo_v2\\obj\\",
+        "projectPath": "D:\\Chuyên ngành\\chuyên ngành 8\\EXE201\\deploy\\Bunbo\\BunBo_v2\\BunBo_v2.csproj",
+        "packagesPath": "C:\\Users\\Asus\\.nuget\\packages\\",
+        "outputPath": "D:\\Chuyên ngành\\chuyên ngành 8\\EXE201\\deploy\\Bunbo\\BunBo_v2\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "D:\\visual\\sdk\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\ptd\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Asus\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "https://www.nuget.org/api/v2/": {}
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
@@ -33,58 +38,11 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "dependencies": {
-            "Microsoft.AspNetCore.Cors": {
-              "target": "Package",
-              "version": "[2.2.0, )"
-            },
-            "Microsoft.AspNetCore.OpenApi": {
-              "target": "Package",
-              "version": "[8.0.2, )"
-            },
-            "Microsoft.EntityFrameworkCore": {
-              "target": "Package",
-              "version": "[8.0.2, )"
-            },
-            "Microsoft.EntityFrameworkCore.Design": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[8.0.2, )"
-            },
-            "Microsoft.EntityFrameworkCore.SqlServer": {
-              "target": "Package",
-              "version": "[8.0.2, )"
-            },
-            "Microsoft.EntityFrameworkCore.Tools": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[8.0.2, )"
-            },
-            "Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore": {
-              "target": "Package",
-              "version": "[8.0.1, )"
-            },
-            "Pomelo.EntityFrameworkCore.MySql": {
-              "target": "Package",
-              "version": "[8.0.1, )"
-            },
-            "Swashbuckle.AspNetCore": {
-              "target": "Package",
-              "version": "[6.5.0, )"
-            }
-          },
           "imports": [
             "net461",
             "net462",
@@ -96,15 +54,7 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "frameworkReferences": {
-            "Microsoft.AspNetCore.App": {
-              "privateAssets": "none"
-            },
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.201/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
         }
       }
     }

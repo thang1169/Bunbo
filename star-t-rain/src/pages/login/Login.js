@@ -35,6 +35,7 @@ export default function LoginPage() {
                 sessionStorage.setItem('token', result.accessToken);
 
                 // Store user information in sessionStorage
+                sessionStorage.setItem('customerId', result.customerId);
                 sessionStorage.setItem('userName', result.customerName);
                 sessionStorage.setItem('phoneNumber', result.phoneNumber);
                 sessionStorage.setItem('address', result.address);

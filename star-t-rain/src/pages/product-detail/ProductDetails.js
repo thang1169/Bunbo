@@ -16,8 +16,9 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import SingleProduct from "../../components/SingleCard";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import ProductListApi from "../../utils/ProductListApi";
+import axios from "axios";
 const dataProduct = [
   {
     id: 1,
@@ -54,28 +55,49 @@ const dataProduct = [
 
 
 export default function ProductDetails() {
-  const [quantity, setQuantity] = useState(1);
+
   const [errorMsg, setErrorMsg] = useState("");
-  const [productDetail, setProductDetail] = useState({});
+  const [productName, setProductName] = useState('');
+  const [price, setPrice] = useState('');
+  const [description, setDescription] = useState('')
   const location = useLocation();
-  console.log("data chi tiết món ăn: ", location.state);
-
+  const [quantity, setQuantity] = useState(1);
+  const [error, setError] = useState(null);
+  const { id } = useParams();
   useEffect(() => {
-    const handleFetchProductDetail = async (id) => {
-      try {
-        const UrlData = await ProductListApi.getProductDetail(id)
-        console.log('checkdata', UrlData) // check token
-        setProductDetail(UrlData);
+    // Fetch restaurant details
+    axios.get(`http://fptcloud28.fptu2024.meu-solutions.com/api/Products/${id}`)
+      .then((response) => {
+        const data = response.data;
+        setProductName(data.productName);
+        setDescription(data.description);
+        setPrice(data.price);
+      })
+      .catch((error) => {
+        console.log(error);
+        setError('Unable to fetch restaurant details.');
+      });
+  }, [id]);
+  const handleAddToCart = () => {
+    const cartItems = JSON.parse(sessionStorage.getItem('cartItems')) || [];
 
-      } catch (error) {
-        console.log('error')
-      }
-    }
-    if (location.state.id) {
-      handleFetchProductDetail(location.state.id);
-    }
-  }, [location])
+    // Tạo đối tượng sản phẩm để thêm vào giỏ hàng
+    const newItem = {
+      productId: id,
+      productName: productName,
+      price: price,
+      quantity: quantity
+    };
 
+    // Thêm sản phẩm vào mảng cartItems
+    cartItems.push(newItem);
+
+    // Lưu mảng cartItems vào session
+    sessionStorage.setItem('cartItems', JSON.stringify(cartItems));
+
+    // Hiển thị thông báo
+    alert('Added to cart');
+  };
 
   const handleChange = (event) => {
     if (event.target.value <= 0) {
@@ -146,24 +168,21 @@ export default function ProductDetails() {
                 variant="h6"
                 sx={{ fontWeight: 700, mt: 2 }}
               >
-                Tái + Nạm + Gân + Giò + Sườn Sụn + Chả cua viên + Chả cây Huế
-              </Typography>
-              <Typography align="left" variant="body1" sx={{ mt: 10 }}>
-                Art No 1200238293b
+                {description}
               </Typography>
             </Box>
           </Grid>
         </Grid>
         <Grid item lg={3} xs={12}>
           <Typography align="left" variant="h5" sx={{ fontWeight: 700, ml: 1 }}>
-            {location.state.name}
+            {productName}
           </Typography>
           <Typography
             align="left"
             variant="h6"
             sx={{ fontWeight: 600, ml: 1, mt: 1 }}
           >
-            100.000 VNĐ
+            {price}
           </Typography>
           <Stack
             direction={"row"}
@@ -197,6 +216,7 @@ export default function ProductDetails() {
             <Button
               variant="contained"
               sx={{ width: 333, mt: 2, backgroundColor: "#4C8787" }}
+              onClick={handleAddToCart}
             >
               ADD TO CART
             </Button>
