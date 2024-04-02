@@ -56,11 +56,11 @@ export default function Contact() {
                                                 Facebook
                                             </p>
                                             <p class="text-neutral-500 dark:text-neutral-200">
-                                                sales@example.com
+                                                Bún bò Ghiền
                                             </p>
-                                            <p class="text-neutral-500 dark:text-neutral-200">
-                                                +1 234-567-89
-                                            </p>
+                                            <a href='https://www.facebook.com/profile.php?id=61556023529099' class="text-neutral-500 dark:text-neutral-200">
+                                                Fabook Link
+                                            </a >
                                         </div>
                                     </div>
                                 </div>
