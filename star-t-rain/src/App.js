@@ -41,7 +41,7 @@ function App() {
         <Route path='/cart' element={<Cart />}></Route>
         <Route path='/checkout' element={<Checkout />}></Route>
         <Route path='/login' element={<LoginPage />}></Route>
-        <Route path='/prodetail' element={<ProductDetails />}></Route>
+        <Route path='/prodetail/:id' element={<ProductDetails />}></Route>
         <Route element={<LayoutPrivate />}>
           <Route path="juice" element={<MenuJuice />} ></Route>
           <Route path="goi-mon-them" element={<GoiMonThem />}></Route>
@@ -57,7 +57,7 @@ function App() {
           <Route path='success' element={<OrderSuccess />}></Route>
           <Route path='cancel' element={<OrderCancel />}></Route>
         </Route>
-        <Route path='/restaurantdetail' element={<RestaurantDetail />}></Route>
+        <Route path='/restaurantdetail/:id' element={<RestaurantDetail />}></Route>
         <Route path='/userpofile' element={<UserProfile />}></Route>
         <Route path='/dashboard' element={<Dashboard />}></Route>
         <Route path='/ordermanagement' element={<OrderManagement />}></Route>

@@ -19,7 +19,7 @@ export default function ProductManagement() {
 
                 setProductList(response.data);
                 const uniqueRestaurantIds = [...new Set(response.data.map(product => product.restaurantId))];
-                const restaurantDataPromises = uniqueRestaurantIds.map(restaurantId => axios.get(`https://localhost:7096/api/Restaurants/${restaurantId}`));
+                const restaurantDataPromises = uniqueRestaurantIds.map(restaurantId => axios.get(`http://fptcloud28.fptu2024.meu-solutions.com/api/Restaurants/${restaurantId}`));
 
                 const restaurantDataResponses = await Promise.all(restaurantDataPromises);
                 const restaurantData = restaurantDataResponses.map(response => response.data);
